@@ -83,7 +83,7 @@ export function Header() {
 
       {/* Main Header - Red background with centered logo */}
       <header
-        className={`sticky top-0 z-50 transition-all duration-300 bg-primary ${
+        className={`transition-all duration-300 bg-primary ${
           isScrolled ? 'shadow-medium py-2' : 'py-0'
         }`}
       >
