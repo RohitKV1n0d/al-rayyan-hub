@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import logo from "@/assets/al-rayyan-logo.png";
 
@@ -7,6 +7,7 @@ interface LoadingScreenProps {
 }
 
 const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
+  const [phase, setPhase] = useState<"loading" | "split" | "done">("loading");
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -14,154 +15,170 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(timer);
-          setTimeout(onLoadingComplete, 400);
+          setTimeout(() => setPhase("split"), 300);
           return 100;
         }
-        return prev + 2;
+        return prev + 3;
       });
-    }, 30);
+    }, 25);
 
     return () => clearInterval(timer);
-  }, [onLoadingComplete]);
+  }, []);
+
+  useEffect(() => {
+    if (phase === "split") {
+      setTimeout(() => {
+        setPhase("done");
+        onLoadingComplete();
+      }, 1200);
+    }
+  }, [phase, onLoadingComplete]);
 
   return (
     <motion.div
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-rayyan-dark overflow-hidden"
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.6, ease: "easeInOut" }}
+      className="fixed inset-0 z-[9999] pointer-events-none"
+      animate={{ opacity: phase === "done" ? 0 : 1 }}
+      transition={{ duration: 0.3 }}
     >
-      {/* Background animated elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-rayyan-red/20 rounded-full"
-            initial={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
-              scale: 0,
-            }}
-            animate={{
-              scale: [0, 1, 0],
-              opacity: [0, 0.5, 0],
-            }}
-            transition={{
-              duration: 2 + Math.random() * 2,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Radial gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-rayyan-red/5 via-transparent to-transparent" />
-
-      {/* Logo container */}
+      {/* Top half */}
       <motion.div
-        className="relative"
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="absolute top-0 left-0 right-0 h-1/2 bg-rayyan-dark origin-top overflow-hidden"
+        animate={{
+          y: phase === "split" ? "-100%" : 0,
+        }}
+        transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
       >
-        {/* Pulsing rings */}
-        {[...Array(3)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute inset-0 border border-rayyan-red/30 rounded-full"
-            initial={{ scale: 1, opacity: 0.5 }}
-            animate={{
-              scale: [1, 2, 2.5],
-              opacity: [0.5, 0.2, 0],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              delay: i * 0.6,
-              ease: "easeOut",
-            }}
-            style={{
-              width: 160,
-              height: 160,
-              left: "50%",
-              top: "50%",
-              transform: "translate(-50%, -50%)",
-            }}
-          />
-        ))}
+        <div className="absolute inset-0 bg-gradient-to-b from-rayyan-dark to-rayyan-dark/95" />
+      </motion.div>
 
-        {/* Spinning border */}
+      {/* Bottom half */}
+      <motion.div
+        className="absolute bottom-0 left-0 right-0 h-1/2 bg-rayyan-dark origin-bottom overflow-hidden"
+        animate={{
+          y: phase === "split" ? "100%" : 0,
+        }}
+        transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-t from-rayyan-dark to-rayyan-dark/95" />
+      </motion.div>
+
+      {/* Center line that expands */}
+      <motion.div
+        className="absolute left-0 right-0 top-1/2 -translate-y-1/2 flex items-center justify-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: phase === "split" ? 0 : 1 }}
+        transition={{ duration: 0.2 }}
+      >
         <motion.div
-          className="absolute -inset-4 rounded-full"
-          style={{
-            background: `conic-gradient(from 0deg, transparent, hsl(var(--rayyan-red)), transparent)`,
+          className="h-px bg-gradient-to-r from-transparent via-rayyan-red to-transparent"
+          initial={{ width: 0 }}
+          animate={{ 
+            width: progress >= 100 ? "100vw" : `${progress * 0.6}%`,
           }}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 0.1 }}
         />
+      </motion.div>
 
-        {/* Logo background */}
+      {/* Loading content - centered */}
+      <motion.div
+        className="absolute inset-0 flex flex-col items-center justify-center"
+        animate={{ 
+          opacity: phase === "split" ? 0 : 1,
+          scale: phase === "split" ? 0.8 : 1,
+        }}
+        transition={{ duration: 0.4, ease: "easeInOut" }}
+      >
+        {/* Logo */}
         <motion.div
-          className="relative w-32 h-32 bg-rayyan-dark rounded-full flex items-center justify-center shadow-2xl"
-          animate={{
-            boxShadow: [
-              "0 0 20px rgba(200, 16, 46, 0.3)",
-              "0 0 40px rgba(200, 16, 46, 0.5)",
-              "0 0 20px rgba(200, 16, 46, 0.3)",
-            ],
-          }}
-          transition={{ duration: 2, repeat: Infinity }}
+          className="relative mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         >
+          {/* Glow effect */}
+          <motion.div
+            className="absolute inset-0 blur-2xl bg-rayyan-red/20 rounded-full"
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{ duration: 2, repeat: Infinity }}
+          />
+          
           <motion.img
             src={logo}
             alt="Al Rayyan SC"
-            className="w-20 h-20 object-contain"
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
+            className="w-24 h-24 object-contain relative z-10"
+            animate={{
+              filter: [
+                "drop-shadow(0 0 10px rgba(200, 16, 46, 0.3))",
+                "drop-shadow(0 0 20px rgba(200, 16, 46, 0.5))",
+                "drop-shadow(0 0 10px rgba(200, 16, 46, 0.3))",
+              ],
+            }}
+            transition={{ duration: 2, repeat: Infinity }}
           />
+        </motion.div>
+
+        {/* Progress indicator */}
+        <motion.div
+          className="flex flex-col items-center gap-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.4 }}
+        >
+          {/* Progress bar container */}
+          <div className="relative w-32 h-0.5 bg-white/10 rounded-full overflow-hidden">
+            <motion.div
+              className="absolute inset-y-0 left-0 bg-rayyan-red rounded-full"
+              style={{ width: `${progress}%` }}
+            />
+            {/* Shimmer effect */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+              animate={{ x: ["-100%", "100%"] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+            />
+          </div>
+
+          {/* Percentage */}
+          <motion.span 
+            className="text-white/40 text-xs tracking-[0.4em] uppercase font-light"
+          >
+            {progress}%
+          </motion.span>
         </motion.div>
       </motion.div>
 
-      {/* Loading text */}
+      {/* Corner accents */}
       <motion.div
-        className="mt-12 text-center"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.6 }}
-      >
-        <motion.p
-          className="text-white/60 text-sm tracking-[0.3em] uppercase mb-4"
-          animate={{ opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          Loading
-        </motion.p>
-
-        {/* Progress bar */}
-        <div className="w-48 h-0.5 bg-white/10 rounded-full overflow-hidden">
-          <motion.div
-            className="h-full bg-gradient-to-r from-rayyan-red to-rayyan-red/80 rounded-full"
-            initial={{ width: 0 }}
-            animate={{ width: `${progress}%` }}
-            transition={{ duration: 0.1 }}
-          />
-        </div>
-
-        <motion.p
-          className="mt-3 text-rayyan-red font-medium text-lg tabular-nums"
-          key={progress}
-        >
-          {progress}%
-        </motion.p>
-      </motion.div>
-
-      {/* Bottom decorative line */}
-      <motion.div
-        className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-rayyan-red to-transparent"
+        className="absolute top-8 left-8 w-12 h-px bg-gradient-to-r from-rayyan-red/50 to-transparent"
         initial={{ scaleX: 0, opacity: 0 }}
-        animate={{ scaleX: 1, opacity: 1 }}
-        transition={{ delay: 0.8, duration: 1 }}
+        animate={{ scaleX: 1, opacity: phase === "split" ? 0 : 1 }}
+        transition={{ delay: 0.2, duration: 0.6 }}
+        style={{ transformOrigin: "left" }}
+      />
+      <motion.div
+        className="absolute top-8 left-8 w-px h-12 bg-gradient-to-b from-rayyan-red/50 to-transparent"
+        initial={{ scaleY: 0, opacity: 0 }}
+        animate={{ scaleY: 1, opacity: phase === "split" ? 0 : 1 }}
+        transition={{ delay: 0.2, duration: 0.6 }}
+        style={{ transformOrigin: "top" }}
+      />
+      
+      <motion.div
+        className="absolute bottom-8 right-8 w-12 h-px bg-gradient-to-l from-rayyan-red/50 to-transparent"
+        initial={{ scaleX: 0, opacity: 0 }}
+        animate={{ scaleX: 1, opacity: phase === "split" ? 0 : 1 }}
+        transition={{ delay: 0.2, duration: 0.6 }}
+        style={{ transformOrigin: "right" }}
+      />
+      <motion.div
+        className="absolute bottom-8 right-8 w-px h-12 bg-gradient-to-t from-rayyan-red/50 to-transparent"
+        initial={{ scaleY: 0, opacity: 0 }}
+        animate={{ scaleY: 1, opacity: phase === "split" ? 0 : 1 }}
+        transition={{ delay: 0.2, duration: 0.6 }}
+        style={{ transformOrigin: "bottom" }}
       />
     </motion.div>
   );

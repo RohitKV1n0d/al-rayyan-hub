@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
 import { MatchTicker } from '@/components/MatchTicker';
@@ -16,33 +16,42 @@ import LoadingScreen from '@/components/LoadingScreen';
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [showContent, setShowContent] = useState(false);
+
+  const handleLoadingComplete = () => {
+    setShowContent(true);
+    setTimeout(() => setIsLoading(false), 800);
+  };
 
   return (
     <>
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         {isLoading && (
-          <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />
+          <LoadingScreen onLoadingComplete={handleLoadingComplete} />
         )}
       </AnimatePresence>
 
-      {!isLoading && (
-        <div className="min-h-screen bg-background">
-          <Header />
-          <main>
-            <Hero />
-            <MatchTicker />
-            <NewsSection />
-            <MatchesSection />
-            <PlayersSection />
-            <AboutSection />
-            <StrategySection />
-            <TableSocialSection />
-            <ShopSection />
-            <SponsorsSection />
-          </main>
-          <Footer />
-        </div>
-      )}
+      <motion.div 
+        className="min-h-screen bg-background"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: showContent ? 1 : 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
+        <Header />
+        <main>
+          <Hero />
+          <MatchTicker />
+          <NewsSection />
+          <MatchesSection />
+          <PlayersSection />
+          <AboutSection />
+          <StrategySection />
+          <TableSocialSection />
+          <ShopSection />
+          <SponsorsSection />
+        </main>
+        <Footer />
+      </motion.div>
     </>
   );
 };
