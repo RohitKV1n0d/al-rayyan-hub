@@ -20,11 +20,11 @@ const Index = () => {
 
   const handleLoadingComplete = () => {
     setShowContent(true);
-    setTimeout(() => setIsLoading(false), 800);
+    setTimeout(() => setIsLoading(false), 100);
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-foreground">
       <AnimatePresence>
         {isLoading && (
           <LoadingScreen onLoadingComplete={handleLoadingComplete} />
@@ -32,10 +32,9 @@ const Index = () => {
       </AnimatePresence>
 
       <motion.div 
-        className="min-h-screen bg-background"
         initial={{ opacity: 0 }}
         animate={{ opacity: showContent ? 1 : 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
+        transition={{ duration: 0.3 }}
       >
         <Header />
         <main>
@@ -52,7 +51,7 @@ const Index = () => {
         </main>
         <Footer />
       </motion.div>
-    </>
+    </div>
   );
 };
 
