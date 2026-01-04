@@ -59,14 +59,14 @@ const Index3 = () => {
         )}
       </AnimatePresence>
 
+      <motion.div variants={itemVariants} className="sticky top-0 z-50">
+        <Header3 />
+      </motion.div>
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate={animateGrid ? "visible" : "hidden"}
       >
-        <motion.div variants={itemVariants}>
-          <Header3 />
-        </motion.div>
         <main>
           <motion.div variants={itemVariants}>
             <Hero3 />

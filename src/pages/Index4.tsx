@@ -28,24 +28,28 @@ const Index4 = () => {
       <LoadingScreen onLoadingComplete={handleLoadingComplete} />
 
       {!isLoading && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: showContent ? 1 : 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Header />
-          <Hero4 />
-          <MatchTicker />
-          <NewsSection />
-          <MatchesSection />
-          <PlayersSection />
-          <AboutSection />
-          <StrategySection />
-          <TableSocialSection />
-          <ShopSection />
-          <SponsorsSection />
-          <Footer />
-        </motion.div>
+        <>
+          <div className="sticky top-0 z-50">
+            <Header />
+          </div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: showContent ? 1 : 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Hero4 />
+            <MatchTicker />
+            <NewsSection />
+            <MatchesSection />
+            <PlayersSection />
+            <AboutSection />
+            <StrategySection />
+            <TableSocialSection />
+            <ShopSection />
+            <SponsorsSection />
+            <Footer />
+          </motion.div>
+        </>
       )}
     </div>
   );
