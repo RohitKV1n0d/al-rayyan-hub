@@ -96,26 +96,18 @@ export function Header() {
               ))}
             </nav>
 
-            {/* Center: Logo - extends above navbar */}
+            {/* Center: Logo - extends below navbar */}
             <a 
               href="#" 
-              className={`relative z-10 mx-8 flex-shrink-0 transition-all duration-300 ${
-                isScrolled ? 'py-1' : 'py-0'
-              }`}
+              className="relative z-10 mx-8 flex-shrink-0"
             >
-              <div className="relative">
-                {/* Logo with background shape */}
-                <div className={`absolute inset-0 bg-primary -top-4 -bottom-2 -left-4 -right-4 ${isScrolled ? 'hidden' : ''}`} 
-                  style={{ clipPath: 'polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%)' }} 
-                />
-                <img
-                  src={logo}
-                  alt="Al-Rayyan SC"
-                  className={`relative z-10 transition-all duration-300 ${
-                    isScrolled ? 'h-12' : 'h-20 -mt-4'
-                  }`}
-                />
-              </div>
+              <img
+                src={logo}
+                alt="Al-Rayyan SC"
+                className={`transition-all duration-300 ${
+                  isScrolled ? 'h-14' : 'h-28 -mb-8'
+                }`}
+              />
             </a>
 
             {/* Desktop: Right nav links */}
