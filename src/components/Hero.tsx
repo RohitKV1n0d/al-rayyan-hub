@@ -5,11 +5,11 @@ import { Button } from '@/components/ui/button';
 import heroPlayer from '@/assets/hero-player.jpg';
 
 const stats = [
-  { label: 'FOUNDED', value: '1967', sub: 'Club heritage' },
-  { label: 'LEAGUE TITLES', value: '8', sub: 'Champions' },
-  { label: 'PRINCE CUP', value: '6', sub: 'Winners' },
-  { label: 'CROWN PRINCE', value: '4', sub: 'Winners' },
-  { label: 'SHEIKH JASSIM', value: '5', sub: 'Winners' },
+  { label: 'Founded', value: '1967' },
+  { label: 'League Titles', value: '8' },
+  { label: 'Prince Cup', value: '6' },
+  { label: 'Crown Prince', value: '4' },
+  { label: 'Sheikh Jassim', value: '5' },
 ];
 
 export function Hero() {
@@ -192,26 +192,23 @@ export function Hero() {
           transition={{ duration: 0.7, delay: 0.6 }}
           className="container mx-auto px-4 pb-6"
         >
-          <div className="bg-background/95 backdrop-blur-sm rounded-xl border border-border shadow-medium overflow-hidden">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 divide-x divide-border">
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.7 + index * 0.1 }}
-                  className="p-3 md:p-4 text-center hover:bg-muted/50 transition-colors group"
-                >
-                  <p className="text-[10px] md:text-xs font-semibold text-muted-foreground tracking-wider uppercase">
-                    {stat.label}
-                  </p>
-                  <p className="mt-1 text-xl md:text-2xl font-black text-foreground group-hover:text-primary transition-colors">
-                    {stat.value}
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{stat.sub}</p>
-                </motion.div>
-              ))}
-            </div>
+          <div className="flex items-center justify-center gap-6 md:gap-10 flex-wrap">
+            {stats.map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.5 + index * 0.08 }}
+                className="flex items-center gap-2 group"
+              >
+                <span className="text-2xl md:text-3xl font-black text-primary">
+                  {stat.value}
+                </span>
+                <span className="text-primary-foreground/70 text-xs md:text-sm font-medium">
+                  {stat.label}
+                </span>
+              </motion.div>
+            ))}
           </div>
         </motion.div>
       </motion.div>
