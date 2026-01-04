@@ -7,6 +7,7 @@ import logo from '@/assets/al-rayyan-logo.png';
 const homeOptions = [
   { label: 'Home 1', href: '/' },
   { label: 'Home 2', href: '/home-2' },
+  { label: 'Home 3', href: '/home-3' },
 ];
 
 const leftNavItems = [
