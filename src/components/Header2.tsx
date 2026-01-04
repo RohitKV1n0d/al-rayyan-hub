@@ -61,15 +61,15 @@ export function Header2() {
 
   return (
     <>
-      {/* Top Utility Bar - Dark with centered promo */}
-      <div className="bg-[#0a0a14] text-primary-foreground py-2 px-4 hidden md:block">
+      {/* Top Utility Bar - Dark */}
+      <div className="bg-foreground text-primary-foreground py-2 px-4 hidden md:block border-b border-primary-foreground/10">
         <div className="container mx-auto flex items-center justify-between">
           {/* Left: Empty for balance */}
           <div className="w-32" />
           
           {/* Center: Promo Banner */}
           <div className="flex items-center gap-3">
-            <span className="text-yellow-400">⚽</span>
+            <span className="text-primary">⚽</span>
             <span className="text-sm font-medium">Join Al Rayyan Membership!</span>
             <a href="#" className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold px-4 py-1.5 rounded uppercase tracking-wide transition-colors">
               Join Now
@@ -92,9 +92,9 @@ export function Header2() {
         </div>
       </div>
 
-      {/* Main Navigation Bar - Navy Blue */}
+      {/* Main Navigation Bar */}
       <header
-        className={`sticky top-0 z-50 transition-all duration-300 bg-[#14213d] ${
+        className={`sticky top-0 z-50 transition-all duration-300 bg-foreground ${
           isScrolled ? 'shadow-lg' : ''
         }`}
       >
@@ -136,7 +136,7 @@ export function Header2() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 10 }}
                         transition={{ duration: 0.15 }}
-                        className="absolute top-full left-0 bg-[#1a2744] border border-white/10 rounded-lg shadow-2xl overflow-hidden min-w-[160px] z-50"
+                        className="absolute top-full left-0 bg-foreground border border-primary-foreground/10 rounded-lg shadow-2xl overflow-hidden min-w-[160px] z-50"
                       >
                         {homeOptions.map((option) => (
                           <button
@@ -148,7 +148,7 @@ export function Header2() {
                             className={`w-full text-left px-4 py-3 text-sm font-medium transition-colors ${
                               location.pathname === option.href 
                                 ? 'bg-primary text-primary-foreground' 
-                                : 'text-primary-foreground/80 hover:bg-white/10 hover:text-primary-foreground'
+                                : 'text-primary-foreground/80 hover:bg-primary-foreground/10 hover:text-primary-foreground'
                             }`}
                           >
                             {option.label}
@@ -185,13 +185,13 @@ export function Header2() {
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: 10 }}
                           transition={{ duration: 0.15 }}
-                          className="absolute top-full left-0 bg-[#1a2744] border border-white/10 rounded-lg shadow-2xl overflow-hidden min-w-[180px] z-50"
+                          className="absolute top-full left-0 bg-foreground border border-primary-foreground/10 rounded-lg shadow-2xl overflow-hidden min-w-[180px] z-50"
                         >
                           {item.items?.map((subItem) => (
                             <a
                               key={subItem.label}
                               href={subItem.href}
-                              className="block px-4 py-3 text-sm font-medium text-primary-foreground/80 hover:bg-white/10 hover:text-primary-foreground transition-colors"
+                              className="block px-4 py-3 text-sm font-medium text-primary-foreground/80 hover:bg-primary-foreground/10 hover:text-primary-foreground transition-colors"
                             >
                               {subItem.label}
                             </a>
@@ -259,9 +259,9 @@ export function Header2() {
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 25 }}
-              className="fixed left-0 top-0 bottom-0 w-80 bg-[#14213d] z-50 shadow-2xl overflow-y-auto"
+              className="fixed left-0 top-0 bottom-0 w-80 bg-foreground z-50 shadow-2xl overflow-y-auto"
             >
-              <div className="p-4 border-b border-white/10 flex items-center justify-between">
+              <div className="p-4 border-b border-primary-foreground/10 flex items-center justify-between">
                 <img src={logo} alt="Al-Rayyan SC" className="h-12" />
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -293,7 +293,7 @@ export function Header2() {
                   ))}
                 </div>
 
-                <div className="h-px bg-white/10 my-4" />
+                <div className="h-px bg-primary-foreground/10 my-4" />
 
                 {/* Nav Links */}
                 {leftNavItems.map((item) => (
@@ -307,7 +307,7 @@ export function Header2() {
                   </a>
                 ))}
                 
-                <div className="h-px bg-white/10 my-4" />
+                <div className="h-px bg-primary-foreground/10 my-4" />
 
                 {rightNavItems.map((item) => (
                   <a
@@ -323,7 +323,7 @@ export function Header2() {
               </nav>
 
               {/* Bottom CTA */}
-              <div className="p-4 border-t border-white/10">
+              <div className="p-4 border-t border-primary-foreground/10">
                 <a href="#" className="block w-full bg-primary hover:bg-primary/90 text-primary-foreground text-center font-bold py-3 rounded-lg transition-colors">
                   Join Membership
                 </a>
@@ -340,7 +340,7 @@ export function Header2() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-[#14213d]/95 z-50 flex items-start justify-center pt-32"
+            className="fixed inset-0 bg-foreground/95 z-50 flex items-start justify-center pt-32"
             onClick={() => setIsSearchOpen(false)}
           >
             <motion.div
@@ -355,7 +355,7 @@ export function Header2() {
                 <input
                   type="text"
                   placeholder="Search Al Rayyan..."
-                  className="w-full bg-white/10 text-primary-foreground text-xl py-4 pl-14 pr-14 rounded-lg border border-white/20 focus:outline-none focus:border-primary placeholder:text-primary-foreground/40"
+                  className="w-full bg-primary-foreground/10 text-primary-foreground text-xl py-4 pl-14 pr-14 rounded-lg border border-primary-foreground/20 focus:outline-none focus:border-primary placeholder:text-primary-foreground/40"
                   autoFocus
                 />
                 <button
