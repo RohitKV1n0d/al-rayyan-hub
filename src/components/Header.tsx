@@ -1,10 +1,15 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, Search, User, ShoppingCart, X, Mail, Phone, Facebook, Twitter, Youtube, Instagram } from 'lucide-react';
+import { Menu, Search, User, ShoppingCart, X, Mail, Phone, Facebook, Twitter, Youtube, Instagram, ChevronDown } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import logo from '@/assets/al-rayyan-logo.png';
 
+const homeOptions = [
+  { label: 'Home 1', href: '/' },
+  { label: 'Home 2', href: '/home-2' },
+];
+
 const leftNavLinks = [
-  { label: 'Home', href: '#' },
   { label: 'About Us', href: '#about' },
   { label: 'Club Strategy', href: '#strategy' },
 ];
@@ -15,13 +20,22 @@ const rightNavLinks = [
   { label: 'Contact Us', href: '#contact' },
 ];
 
-const allNavLinks = [...leftNavLinks, ...rightNavLinks];
+const allNavLinks = [
+  { label: 'Home', href: '/', isDropdown: true },
+  ...leftNavLinks, 
+  ...rightNavLinks
+];
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isHomeDropdownOpen, setIsHomeDropdownOpen] = useState(false);
   const [cartCount] = useState(2);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const currentHome = homeOptions.find(opt => opt.href === location.pathname) || homeOptions[0];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -85,6 +99,48 @@ export function Header() {
 
             {/* Desktop: Left nav links */}
             <nav className="hidden lg:flex items-center gap-1">
+              {/* Home Dropdown */}
+              <div 
+                className="relative"
+                onMouseEnter={() => setIsHomeDropdownOpen(true)}
+                onMouseLeave={() => setIsHomeDropdownOpen(false)}
+              >
+                <button
+                  className="flex items-center gap-1 px-5 py-6 text-sm font-semibold text-primary-foreground uppercase tracking-wider hover:bg-white/10 transition-colors"
+                >
+                  {currentHome.label}
+                  <ChevronDown className={`w-4 h-4 transition-transform ${isHomeDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+                <AnimatePresence>
+                  {isHomeDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute top-full left-0 bg-foreground border border-primary-foreground/10 rounded-lg shadow-strong overflow-hidden min-w-[140px]"
+                    >
+                      {homeOptions.map((option) => (
+                        <button
+                          key={option.href}
+                          onClick={() => {
+                            navigate(option.href);
+                            setIsHomeDropdownOpen(false);
+                          }}
+                          className={`w-full text-left px-4 py-3 text-sm font-semibold uppercase tracking-wider transition-colors ${
+                            location.pathname === option.href 
+                              ? 'bg-primary text-primary-foreground' 
+                              : 'text-primary-foreground hover:bg-primary/20'
+                          }`}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
               {leftNavLinks.map((link) => (
                 <a
                   key={link.label}
@@ -175,7 +231,28 @@ export function Header() {
                 </button>
               </div>
               <nav className="p-4">
-                {allNavLinks.map((link) => (
+                {/* Home Options */}
+                <div className="mb-2">
+                  <span className="block py-2 px-4 text-xs font-bold text-muted-foreground uppercase tracking-wide">Home Versions</span>
+                  {homeOptions.map((option) => (
+                    <button
+                      key={option.href}
+                      onClick={() => {
+                        navigate(option.href);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className={`w-full text-left py-3 px-4 text-lg font-medium border-b border-border transition-colors ${
+                        location.pathname === option.href 
+                          ? 'bg-primary/10 text-primary' 
+                          : 'hover:bg-muted hover:text-primary'
+                      }`}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+                {/* Other Links */}
+                {[...leftNavLinks, ...rightNavLinks].map((link) => (
                   <a
                     key={link.label}
                     href={link.href}
