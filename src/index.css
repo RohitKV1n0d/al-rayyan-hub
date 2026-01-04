@@ -99,6 +99,18 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Inter', system-ui, sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* Smooth reveal for sections */
+  section {
+    will-change: transform, opacity;
+  }
+
+  /* Selection styling */
+  ::selection {
+    background: hsl(var(--primary) / 0.3);
+    color: hsl(var(--foreground));
   }
 }
 
@@ -237,4 +249,101 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(354 88% 35%);
+}
+
+/* Custom shadows for cards */
+.shadow-soft {
+  box-shadow: 0 2px 15px -3px hsl(0 0% 0% / 0.07), 0 10px 20px -2px hsl(0 0% 0% / 0.04);
+}
+
+.shadow-medium {
+  box-shadow: 0 4px 25px -5px hsl(0 0% 0% / 0.1), 0 10px 30px -5px hsl(0 0% 0% / 0.05);
+}
+
+.shadow-strong {
+  box-shadow: 0 10px 40px -10px hsl(0 0% 0% / 0.15), 0 20px 50px -10px hsl(0 0% 0% / 0.1);
+}
+
+.shadow-red-glow {
+  box-shadow: 0 10px 40px -10px hsl(354 88% 43% / 0.35), 0 4px 20px -5px hsl(354 88% 43% / 0.2);
+}
+
+/* Link hover underline animation */
+.link-underline {
+  @apply relative;
+}
+
+.link-underline::after {
+  content: '';
+  @apply absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300;
+}
+
+.link-underline:hover::after {
+  @apply w-full;
+}
+
+/* Magnetic button effect placeholder */
+.magnetic-button {
+  @apply relative transition-transform duration-200;
+}
+
+/* Glass effect */
+.glass {
+  background: hsl(var(--background) / 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid hsl(var(--border) / 0.5);
+}
+
+/* Gradient text */
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-red-400;
+}
+
+/* Image reveal animation */
+@keyframes imageReveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.image-reveal {
+  animation: imageReveal 1s ease-out forwards;
+}
+
+/* Floating animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Shimmer effect for loading states */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 25%,
+    hsl(var(--primary) / 0.1) 50%,
+    transparent 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
 }
