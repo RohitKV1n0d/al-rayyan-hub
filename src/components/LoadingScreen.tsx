@@ -32,7 +32,7 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[9999] bg-white flex items-center justify-center overflow-hidden"
+      className="fixed inset-0 z-[9999] bg-foreground flex items-center justify-center overflow-hidden"
       style={{
         clipPath: "circle(150% at 50% 50%)",
       }}
@@ -43,7 +43,7 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
       }}
       transition={{ 
         duration: 1.2, 
-        ease: [0.87, 0, 0.13, 1], // expo.inOut equivalent
+        ease: [0.87, 0, 0.13, 1],
       }}
     >
       {/* Brand Text Container */}
@@ -59,7 +59,7 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
           scale: { duration: 0.8, ease: "easeOut" }
         }}
       >
-        <h1 className="text-[15vw] md:text-[12vw] font-black text-foreground uppercase leading-none tracking-tighter flex items-center">
+        <h1 className="text-[15vw] md:text-[12vw] font-black text-primary-foreground uppercase leading-none tracking-tighter flex items-center">
           <motion.span
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
