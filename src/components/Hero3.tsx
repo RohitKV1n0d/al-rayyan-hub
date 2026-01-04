@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
-import playerHero from '@/assets/player-hero-transparent.png';
+import playerCutout from '@/assets/hero-player-cutout.png';
+import heroGraphic from '@/assets/hero-graphic.png';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -31,44 +32,40 @@ const itemVariants = {
 export function Hero3() {
   return (
     <section className="relative min-h-screen overflow-hidden bg-foreground">
-      {/* Background with geometric shapes */}
+      {/* Background with stadium */}
       <div className="absolute inset-0">
         {/* Stadium background */}
         <div 
-          className="absolute inset-0 opacity-30"
+          className="absolute inset-0 opacity-40"
           style={{
             backgroundImage: `url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=1920')`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-foreground via-foreground/95 to-foreground/80" />
-        
-        {/* Red geometric shapes */}
-        <div className="absolute top-0 right-0 w-1/2 h-full">
-          {/* Large arrow shape */}
-          <svg className="absolute top-1/4 right-20 w-96 h-96 text-primary opacity-90" viewBox="0 0 100 100" fill="currentColor">
-            <polygon points="20,0 100,50 20,100 40,50" />
-          </svg>
-          {/* Second arrow shape */}
-          <svg className="absolute top-1/3 right-40 w-64 h-64 text-primary opacity-70" viewBox="0 0 100 100" fill="currentColor">
-            <polygon points="20,0 100,50 20,100 40,50" />
-          </svg>
-          {/* Accent lines */}
-          <div className="absolute top-20 right-10 w-32 h-1 bg-primary rotate-45" />
-          <div className="absolute bottom-40 right-60 w-24 h-1 bg-primary -rotate-12" />
-        </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70" />
       </div>
 
-      {/* Player Image - Cutout */}
-      <div className="absolute right-0 bottom-0 w-1/2 h-full hidden lg:flex items-end justify-center pointer-events-none">
+      {/* Red Geometric Graphic */}
+      <div className="absolute top-0 right-0 w-1/2 h-full hidden lg:block pointer-events-none">
         <img
-          src={playerHero}
+          src={heroGraphic}
+          alt=""
+          className="absolute top-1/2 right-0 -translate-y-1/2 h-[90%] w-auto object-contain"
+        />
+      </div>
+
+      {/* Player Image - PNG Cutout */}
+      <div className="absolute right-0 bottom-0 w-1/2 h-full hidden lg:flex items-end justify-center pointer-events-none z-10">
+        <motion.img
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          src={playerCutout}
           alt="Featured Player"
-          className="h-[85%] w-auto object-contain object-bottom drop-shadow-2xl"
+          className="h-[85%] w-auto object-contain object-bottom"
           style={{ 
-            filter: 'drop-shadow(0 0 40px rgba(0,0,0,0.5))',
-            mixBlendMode: 'normal'
+            filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.4))',
           }}
         />
       </div>
