@@ -6,16 +6,20 @@ interface LoadingScreenProps {
 }
 
 const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
-  const [phase, setPhase] = useState<"intro" | "zoom" | "reveal">("intro");
+  const [phase, setPhase] = useState<"text" | "zoom" | "reveal">("text");
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    const zoomTimer = setTimeout(() => setPhase("zoom"), 1200);
-    const revealTimer = setTimeout(() => setPhase("reveal"), 2000);
+    // Phase 1: Text appears (already visible)
+    // Phase 2: Zoom in text after 1s
+    const zoomTimer = setTimeout(() => setPhase("zoom"), 1000);
+    // Phase 3: Circle shrinks to reveal after zoom
+    const revealTimer = setTimeout(() => setPhase("reveal"), 1800);
+    // Complete and hide
     const completeTimer = setTimeout(() => {
       setIsVisible(false);
       onLoadingComplete();
-    }, 2600);
+    }, 3200);
 
     return () => {
       clearTimeout(zoomTimer);
@@ -29,55 +33,56 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
   return (
     <motion.div
       className="fixed inset-0 z-[9999] bg-white flex items-center justify-center overflow-hidden"
+      style={{
+        clipPath: "circle(150% at 50% 50%)",
+      }}
       animate={{
         clipPath: phase === "reveal" 
           ? "circle(0% at 50% 50%)" 
           : "circle(150% at 50% 50%)",
       }}
       transition={{ 
-        duration: phase === "reveal" ? 0.8 : 0, 
-        ease: [0.76, 0, 0.24, 1] 
+        duration: 1.2, 
+        ease: [0.87, 0, 0.13, 1], // expo.inOut equivalent
       }}
     >
-      {/* Brand Text */}
+      {/* Brand Text Container */}
       <motion.div
         className="flex items-center justify-center"
-        initial={{ opacity: 0 }}
+        initial={{ opacity: 0, scale: 0.9 }}
         animate={{ 
-          opacity: phase === "intro" || phase === "zoom" ? 1 : 0,
-          scale: phase === "zoom" ? 1.1 : 1,
+          opacity: 1,
+          scale: phase === "zoom" || phase === "reveal" ? 1.15 : 1,
         }}
         transition={{ 
-          opacity: { duration: 0.3 },
+          opacity: { duration: 0.4 },
           scale: { duration: 0.8, ease: "easeOut" }
         }}
       >
-        <h1 className="text-[12vw] md:text-[10vw] font-black text-foreground uppercase leading-none tracking-tighter flex items-center">
-          <span>AL RAYY</span>
+        <h1 className="text-[15vw] md:text-[12vw] font-black text-foreground uppercase leading-none tracking-tighter flex items-center">
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+          >
+            AL RAYY
+          </motion.span>
           {/* Red Circle as "A" */}
           <motion.div
-            className="w-[8vw] h-[8vw] md:w-[6vw] md:h-[6vw] bg-primary rounded-full mx-[0.5vw] flex-shrink-0"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.4, delay: 0.3, ease: "backOut" }}
+            className="w-[10vw] h-[10vw] md:w-[8vw] md:h-[8vw] bg-primary rounded-full mx-[0.3vw] flex-shrink-0"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.3, ease: "backOut" }}
           />
-          <span>N</span>
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.5 }}
+          >
+            N
+          </motion.span>
         </h1>
       </motion.div>
-
-      {/* Subtle corner accents */}
-      <motion.div
-        className="absolute top-8 left-8 w-12 h-12 border-l-2 border-t-2 border-foreground/20"
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.4, delay: 0.5 }}
-      />
-      <motion.div
-        className="absolute bottom-8 right-8 w-12 h-12 border-r-2 border-b-2 border-foreground/20"
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.4, delay: 0.5 }}
-      />
     </motion.div>
   );
 };
