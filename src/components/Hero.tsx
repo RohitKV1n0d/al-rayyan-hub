@@ -5,16 +5,15 @@ import heroPlayer from '@/assets/hero-player.jpg';
 import playerFeatured from '@/assets/player-featured.jpg';
 
 const tickerNews = [
-  "TICKETS FOR AL GHARAFA MATCH ALMOST SOLD OUT",
-  "ROGER GUEDES NAMED PLAYER OF THE WEEK",
-  "NEW KIT LAUNCH SCHEDULED FOR FRIDAY",
-  "YOUTH ACADEMY PLAYERS CALLED UP TO NATIONAL TEAM",
-  "AL RAYYAN SECURES 3-0 VICTORY OVER AL SADD",
+  "QATAR DERBY ENDS IN A DRAW",
+  "ROGER GUEDES: WE ARE READY FOR THE MATCH AGAINST AL-ARABI",
+  "ARTUR JORGE: WE AIM TO END THE YEAR WITH A VICTORY",
+  "AL RAYYAN SECURES 3-0 VICTORY IN LAST MATCH",
 ];
 
 const latestHeadlines = [
-  "Official: New kit launch scheduled for Friday",
-  "Training Gallery: Preparation for the Clasico",
+  "Roger Guedes: We Are Ready for the Match Against Al-Arabi and Our Goal Is the Three Points",
+  "Artur Jorge: We Missed Playing in the League and Aim to End the Year with a Victory",
 ];
 
 // Staggered animation variants for bento grid items
@@ -107,7 +106,7 @@ export function Hero() {
                 
                 {/* Stadium Tag */}
                 <div className="absolute top-4 left-4">
-                  <span className="text-primary-foreground/60 text-xs font-medium">🏟️ Stadium Atmosphere</span>
+                  <span className="text-primary-foreground/60 text-xs font-medium">⚽ Football News</span>
                 </div>
 
                 {/* Content */}
@@ -115,21 +114,21 @@ export function Hero() {
                   {/* Breaking Badge */}
                   <div className="flex items-center gap-3 mb-4">
                     <span className="bg-primary text-primary-foreground text-[10px] font-bold px-3 py-1.5 rounded uppercase tracking-wide animate-pulse">
-                      Breaking
+                      Latest
                     </span>
-                    <span className="text-primary-foreground/50 text-xs uppercase tracking-wide">2 Hours Ago</span>
+                    <span className="text-primary-foreground/50 text-xs uppercase tracking-wide">December 28, 2025</span>
                   </div>
 
                   {/* Headline */}
                   <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-primary-foreground leading-[0.95] uppercase tracking-tight">
-                    Lions Roar in
+                    Qatar Derby
                     <br />
-                    <span className="text-primary">5-3 Thriller</span>
+                    <span className="text-primary">Ends in a Draw</span>
                   </h1>
 
                   {/* Description */}
                   <p className="mt-4 text-primary-foreground/70 text-sm md:text-base max-w-md leading-relaxed">
-                    An incredible comeback victory at home. See the highlights, player ratings, and post-match interviews from the QSL Cup spectacle.
+                    A thrilling encounter between the top teams. See the highlights, player ratings, and post-match analysis from the Qatar Stars League clash.
                   </p>
                 </div>
               </motion.div>
@@ -165,7 +164,7 @@ export function Hero() {
                 variants={itemVariants}
                 className="bg-primary rounded-2xl p-6 text-center hover:shadow-red-glow transition-shadow"
               >
-                <span className="text-primary-foreground/80 text-[10px] font-bold uppercase tracking-[0.2em]">Next Fixture</span>
+                <span className="text-primary-foreground/80 text-[10px] font-bold uppercase tracking-[0.2em]">Next Match • Sep 23, 2025</span>
                 
                 {/* Teams */}
                 <div className="flex items-center justify-center gap-6 mt-5">
@@ -178,9 +177,9 @@ export function Hero() {
                   <span className="text-primary-foreground/60 text-lg font-medium">VS</span>
                   <div className="flex flex-col items-center gap-2">
                     <div className="w-14 h-14 rounded-full bg-foreground flex items-center justify-center">
-                      <span className="text-primary-foreground font-black text-sm">GHA</span>
+                      <span className="text-primary-foreground font-black text-sm">ARA</span>
                     </div>
-                    <span className="text-primary-foreground text-xs font-bold uppercase tracking-wide">Al Gharafa</span>
+                    <span className="text-primary-foreground text-xs font-bold uppercase tracking-wide">Al Arabi</span>
                   </div>
                 </div>
 
