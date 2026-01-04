@@ -1,5 +1,5 @@
-import { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import heroPlayer from '@/assets/hero-player.jpg';
 import playerFeatured from '@/assets/player-featured.jpg';
@@ -47,14 +47,6 @@ const itemVariants = {
 };
 
 export function Hero() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end start'],
-  });
-
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-
   // Countdown timer state
   const [countdown, setCountdown] = useState({ days: 4, hours: 12, mins: 30, secs: 5 });
 
@@ -85,9 +77,9 @@ export function Hero() {
   }, []);
 
   return (
-    <section ref={containerRef} className="relative min-h-screen overflow-hidden bg-foreground">
+    <section className="relative min-h-screen overflow-hidden bg-foreground">
       {/* Main Content */}
-      <motion.div style={{ opacity }} className="relative min-h-screen flex flex-col">
+      <div className="relative min-h-screen flex flex-col">
         
         {/* Main Grid with staggered animation */}
         <motion.div 
@@ -264,7 +256,7 @@ export function Hero() {
             ))}
           </div>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 }
