@@ -1,12 +1,20 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import heroImage from '@/assets/hero-stadium.jpg';
+import sponsorBaladna from '@/assets/sponsor-baladna.png';
+import sponsorQib from '@/assets/sponsor-qib.png';
+import sponsorAlkhattiya from '@/assets/sponsor-alkhattiya.png';
+import sponsorApplab from '@/assets/sponsor-applab.png';
+import sponsorQtire from '@/assets/sponsor-qtire.png';
+import sponsorDallah from '@/assets/sponsor-dallah.png';
 
 const sponsors = [
-  { name: 'QNB', logo: 'QNB' },
-  { name: 'Ooredoo', logo: 'Ooredoo' },
-  { name: 'Qatar Airways', logo: 'QA' },
-  { name: 'Applab', logo: 'AppLab' },
+  { name: 'Baladna', logo: sponsorBaladna },
+  { name: 'QIB', logo: sponsorQib },
+  { name: 'Al Khattiya', logo: sponsorAlkhattiya },
+  { name: 'AppLab', logo: sponsorApplab },
+  { name: 'Q-Tire', logo: sponsorQtire },
+  { name: 'Dallah Holding', logo: sponsorDallah },
 ];
 
 export function SponsorsSection() {
@@ -63,9 +71,13 @@ export function SponsorsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="w-32 h-20 bg-primary-foreground/10 backdrop-blur-sm rounded-xl flex items-center justify-center text-primary-foreground font-bold text-xl hover:bg-primary-foreground/20 transition-colors border border-primary-foreground/20 hover:border-primary"
+              className="w-36 h-24 bg-white/95 backdrop-blur-sm rounded-xl flex items-center justify-center p-4 hover:bg-white transition-colors border border-primary-foreground/10 hover:border-primary hover:scale-105 transition-all duration-300"
             >
-              {sponsor.logo}
+              <img 
+                src={sponsor.logo} 
+                alt={sponsor.name} 
+                className="max-w-full max-h-full object-contain"
+              />
             </motion.div>
           ))}
         </motion.div>
