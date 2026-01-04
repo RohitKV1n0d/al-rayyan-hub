@@ -8,6 +8,7 @@ const homeOptions = [
   { label: 'Home 1', href: '/' },
   { label: 'Home 2', href: '/home-2' },
   { label: 'Home 3', href: '/home-3' },
+  { label: 'Home 4', href: '/home-4' },
 ];
 
 const leftNavLinks = [
