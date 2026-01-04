@@ -1,17 +1,29 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import logo from "@/assets/al-rayyan-logo.png";
 
 interface LoadingScreenProps {
   onLoadingComplete: () => void;
 }
 
 const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
-  const [phase, setPhase] = useState<"text" | "zoom" | "reveal">("text");
+  const [phase, setPhase] = useState<"logo" | "zoom" | "reveal">("logo");
   const [isVisible, setIsVisible] = useState(true);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // Phase 1: Text appears (already visible)
-    // Phase 2: Zoom in text after 1s
+    // Animate progress bar
+    const progressInterval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(progressInterval);
+          return 100;
+        }
+        return prev + 2;
+      });
+    }, 30);
+
+    // Phase 2: Zoom in after 1s
     const zoomTimer = setTimeout(() => setPhase("zoom"), 1000);
     // Phase 3: Circle shrinks to reveal after zoom
     const revealTimer = setTimeout(() => setPhase("reveal"), 1800);
@@ -22,6 +34,7 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
     }, 3200);
 
     return () => {
+      clearInterval(progressInterval);
       clearTimeout(zoomTimer);
       clearTimeout(revealTimer);
       clearTimeout(completeTimer);
@@ -51,42 +64,38 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
           ease: [0.87, 0, 0.13, 1],
         }}
       >
-        {/* Brand Text Container */}
+        {/* Logo and Loading Bar Container */}
         <motion.div
-          className="flex items-center justify-center"
+          className="flex flex-col items-center justify-center gap-8"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ 
             opacity: 1,
-            scale: phase === "zoom" || phase === "reveal" ? 1.15 : 1,
+            scale: phase === "zoom" || phase === "reveal" ? 1.1 : 1,
           }}
           transition={{ 
             opacity: { duration: 0.4 },
             scale: { duration: 0.8, ease: "easeOut" }
           }}
         >
-          <h1 className="text-[15vw] md:text-[12vw] font-black text-black uppercase leading-none tracking-tighter flex items-center">
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.1 }}
-            >
-              AL RAYY
-            </motion.span>
-            {/* Red Circle as "A" */}
+          {/* Logo */}
+          <motion.img
+            src={logo}
+            alt="Al-Rayyan SC"
+            className="h-32 md:h-40 w-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+          />
+          
+          {/* Loading Bar */}
+          <div className="w-48 md:w-64 h-1 bg-black/10 rounded-full overflow-hidden">
             <motion.div
-              className="w-[10vw] h-[10vw] md:w-[8vw] md:h-[8vw] bg-primary rounded-full mx-[0.3vw] flex-shrink-0"
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.3, ease: "backOut" }}
+              className="h-full bg-primary rounded-full"
+              initial={{ width: 0 }}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 0.1 }}
             />
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.5 }}
-            >
-              N
-            </motion.span>
-          </h1>
+          </div>
         </motion.div>
       </motion.div>
     </motion.div>
