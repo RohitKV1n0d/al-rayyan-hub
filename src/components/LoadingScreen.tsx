@@ -1,186 +1,274 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import logo from "@/assets/al-rayyan-logo.png";
 
 interface LoadingScreenProps {
   onLoadingComplete: () => void;
 }
 
 const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
-  const [phase, setPhase] = useState<"loading" | "split" | "done">("loading");
-  const [progress, setProgress] = useState(0);
+  const [phase, setPhase] = useState<"strobe" | "blocks" | "text" | "zoom" | "done">("strobe");
+  const [strobeCount, setStrobeCount] = useState(0);
+  const [blockIndex, setBlockIndex] = useState(0);
 
+  // Phase timing
   useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(timer);
-          setTimeout(() => setPhase("split"), 300);
-          return 100;
-        }
-        return prev + 3;
-      });
-    }, 25);
+    const timers: NodeJS.Timeout[] = [];
 
-    return () => clearInterval(timer);
+    // Strobe phase - rapid white/dark flashes
+    const strobeInterval = setInterval(() => {
+      setStrobeCount((prev) => {
+        if (prev >= 6) {
+          clearInterval(strobeInterval);
+          setPhase("blocks");
+          return prev;
+        }
+        return prev + 1;
+      });
+    }, 80);
+    timers.push(strobeInterval);
+
+    return () => timers.forEach(clearTimeout);
   }, []);
 
+  // Blocks phase
   useEffect(() => {
-    if (phase === "split") {
-      setTimeout(() => {
-        setPhase("done");
-        onLoadingComplete();
-      }, 1200);
-    }
+    if (phase !== "blocks") return;
+
+    const blockInterval = setInterval(() => {
+      setBlockIndex((prev) => {
+        if (prev >= 5) {
+          clearInterval(blockInterval);
+          setTimeout(() => setPhase("text"), 100);
+          return prev;
+        }
+        return prev + 1;
+      });
+    }, 60);
+
+    return () => clearInterval(blockInterval);
+  }, [phase]);
+
+  // Text phase
+  useEffect(() => {
+    if (phase !== "text") return;
+    const timer = setTimeout(() => setPhase("zoom"), 600);
+    return () => clearTimeout(timer);
+  }, [phase]);
+
+  // Zoom phase
+  useEffect(() => {
+    if (phase !== "zoom") return;
+    const timer = setTimeout(() => {
+      setPhase("done");
+      onLoadingComplete();
+    }, 800);
+    return () => clearTimeout(timer);
   }, [phase, onLoadingComplete]);
 
+  const blocks = [
+    { width: "15%", left: "10%", delay: 0 },
+    { width: "25%", left: "30%", delay: 1 },
+    { width: "20%", left: "60%", delay: 2 },
+    { width: "10%", left: "85%", delay: 3 },
+    { width: "30%", left: "5%", delay: 4 },
+  ];
+
   return (
-    <motion.div
-      className="fixed inset-0 z-[9999] pointer-events-none"
-      animate={{ opacity: phase === "done" ? 0 : 1 }}
-      transition={{ duration: 0.3 }}
-    >
-      {/* Top half */}
-      <motion.div
-        className="absolute top-0 left-0 right-0 h-1/2 bg-rayyan-dark origin-top overflow-hidden"
-        animate={{
-          y: phase === "split" ? "-100%" : 0,
-        }}
-        transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-b from-rayyan-dark to-rayyan-dark/95" />
-      </motion.div>
-
-      {/* Bottom half */}
-      <motion.div
-        className="absolute bottom-0 left-0 right-0 h-1/2 bg-rayyan-dark origin-bottom overflow-hidden"
-        animate={{
-          y: phase === "split" ? "100%" : 0,
-        }}
-        transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-t from-rayyan-dark to-rayyan-dark/95" />
-      </motion.div>
-
-      {/* Center line that expands */}
-      <motion.div
-        className="absolute left-0 right-0 top-1/2 -translate-y-1/2 flex items-center justify-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: phase === "split" ? 0 : 1 }}
-        transition={{ duration: 0.2 }}
-      >
+    <AnimatePresence>
+      {phase !== "done" && (
         <motion.div
-          className="h-px bg-gradient-to-r from-transparent via-rayyan-red to-transparent"
-          initial={{ width: 0 }}
-          animate={{ 
-            width: progress >= 100 ? "100vw" : `${progress * 0.6}%`,
-          }}
+          className="fixed inset-0 z-[9999] overflow-hidden"
+          exit={{ opacity: 0 }}
           transition={{ duration: 0.1 }}
-        />
-      </motion.div>
-
-      {/* Loading content - centered */}
-      <motion.div
-        className="absolute inset-0 flex flex-col items-center justify-center"
-        animate={{ 
-          opacity: phase === "split" ? 0 : 1,
-          scale: phase === "split" ? 0.8 : 1,
-        }}
-        transition={{ duration: 0.4, ease: "easeInOut" }}
-      >
-        {/* Logo */}
-        <motion.div
-          className="relative mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          {/* Glow effect */}
+          {/* Base layer - switches between white and dark */}
           <motion.div
-            className="absolute inset-0 blur-2xl bg-rayyan-red/20 rounded-full"
+            className="absolute inset-0"
             animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.3, 0.5, 0.3],
+              backgroundColor: phase === "strobe" 
+                ? strobeCount % 2 === 0 ? "#ffffff" : "#0a0a0a"
+                : phase === "blocks" ? "#ffffff"
+                : phase === "text" ? "#0a0a0a"
+                : "#0a0a0a"
             }}
-            transition={{ duration: 2, repeat: Infinity }}
+            transition={{ duration: 0.05 }}
           />
-          
-          <motion.img
-            src={logo}
-            alt="Al Rayyan SC"
-            className="w-24 h-24 object-contain relative z-10"
-            animate={{
-              filter: [
-                "drop-shadow(0 0 10px rgba(200, 16, 46, 0.3))",
-                "drop-shadow(0 0 20px rgba(200, 16, 46, 0.5))",
-                "drop-shadow(0 0 10px rgba(200, 16, 46, 0.3))",
-              ],
+
+          {/* Geometric blocks phase */}
+          {phase === "blocks" && (
+            <div className="absolute inset-0 flex items-center">
+              {blocks.map((block, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute h-4 bg-black"
+                  initial={{ scaleX: 0, opacity: 0 }}
+                  animate={{
+                    scaleX: blockIndex >= i ? 1 : 0,
+                    opacity: blockIndex >= i ? 1 : 0,
+                  }}
+                  style={{
+                    width: block.width,
+                    left: block.left,
+                    top: `${30 + i * 10}%`,
+                    transformOrigin: "left",
+                  }}
+                  transition={{ duration: 0.05 }}
+                />
+              ))}
+              
+              {/* Vertical accent blocks */}
+              {blockIndex >= 3 && (
+                <>
+                  <motion.div
+                    className="absolute w-2 bg-rayyan-red"
+                    initial={{ scaleY: 0 }}
+                    animate={{ scaleY: 1 }}
+                    style={{ height: "40%", left: "20%", top: "30%", transformOrigin: "top" }}
+                    transition={{ duration: 0.08 }}
+                  />
+                  <motion.div
+                    className="absolute w-2 bg-rayyan-red"
+                    initial={{ scaleY: 0 }}
+                    animate={{ scaleY: 1 }}
+                    style={{ height: "30%", right: "25%", top: "35%", transformOrigin: "top" }}
+                    transition={{ duration: 0.08, delay: 0.04 }}
+                  />
+                </>
+              )}
+            </div>
+          )}
+
+          {/* Text flash phase */}
+          {phase === "text" && (
+            <motion.div
+              className="absolute inset-0 flex items-center justify-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.05 }}
+            >
+              {/* Background flash */}
+              <motion.div
+                className="absolute inset-0 bg-white"
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 0 }}
+                transition={{ duration: 0.15 }}
+              />
+              
+              {/* Club name - massive and bold */}
+              <motion.div
+                className="relative text-center"
+                initial={{ scale: 1.2, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.1 }}
+              >
+                <motion.h1
+                  className="text-[15vw] md:text-[12vw] font-black text-white tracking-tighter leading-none"
+                  style={{ fontFamily: "system-ui, -apple-system, sans-serif" }}
+                  animate={{
+                    textShadow: [
+                      "0 0 0px rgba(200,16,46,0)",
+                      "0 0 30px rgba(200,16,46,0.8)",
+                      "0 0 0px rgba(200,16,46,0)",
+                    ],
+                  }}
+                  transition={{ duration: 0.4 }}
+                >
+                  AL RAYYAN
+                </motion.h1>
+                
+                {/* Accent line under text */}
+                <motion.div
+                  className="h-1 bg-rayyan-red mx-auto mt-2"
+                  initial={{ width: 0 }}
+                  animate={{ width: "60%" }}
+                  transition={{ duration: 0.2, delay: 0.1 }}
+                />
+              </motion.div>
+
+              {/* Flash overlay */}
+              <motion.div
+                className="absolute inset-0 bg-rayyan-red mix-blend-overlay"
+                initial={{ opacity: 0.5 }}
+                animate={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              />
+            </motion.div>
+          )}
+
+          {/* Zoom through phase - football/O shape */}
+          {phase === "zoom" && (
+            <motion.div
+              className="absolute inset-0 flex items-center justify-center bg-rayyan-dark"
+              initial={{ opacity: 1 }}
+              animate={{ opacity: 1 }}
+            >
+              {/* The expanding circle/football shape mask */}
+              <motion.div
+                className="absolute inset-0"
+                style={{
+                  background: "radial-gradient(circle at center, transparent 0%, #0a0a0a 0%)",
+                }}
+                animate={{
+                  background: [
+                    "radial-gradient(circle at center, transparent 0%, #0a0a0a 0%)",
+                    "radial-gradient(circle at center, transparent 50%, #0a0a0a 51%)",
+                    "radial-gradient(circle at center, transparent 100%, #0a0a0a 101%)",
+                  ],
+                }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              />
+
+              {/* Center ring that expands */}
+              <motion.div
+                className="absolute border-4 border-rayyan-red rounded-full"
+                initial={{ width: 100, height: 100, opacity: 1 }}
+                animate={{ 
+                  width: "300vmax", 
+                  height: "300vmax", 
+                  opacity: 0,
+                  borderWidth: 2,
+                }}
+                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              />
+
+              {/* Inner accent ring */}
+              <motion.div
+                className="absolute border-2 border-white/30 rounded-full"
+                initial={{ width: 60, height: 60, opacity: 1 }}
+                animate={{ 
+                  width: "250vmax", 
+                  height: "250vmax", 
+                  opacity: 0,
+                }}
+                transition={{ duration: 0.6, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
+              />
+
+              {/* Football stitching lines */}
+              <motion.div
+                className="absolute w-px h-20 bg-white/50"
+                initial={{ scaleY: 1, opacity: 1 }}
+                animate={{ scaleY: 20, opacity: 0 }}
+                transition={{ duration: 0.4 }}
+              />
+              <motion.div
+                className="absolute w-20 h-px bg-white/50"
+                initial={{ scaleX: 1, opacity: 1 }}
+                animate={{ scaleX: 20, opacity: 0 }}
+                transition={{ duration: 0.4 }}
+              />
+            </motion.div>
+          )}
+
+          {/* Scanlines overlay for texture */}
+          <div 
+            className="absolute inset-0 pointer-events-none opacity-[0.03]"
+            style={{
+              backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px)",
             }}
-            transition={{ duration: 2, repeat: Infinity }}
           />
         </motion.div>
-
-        {/* Progress indicator */}
-        <motion.div
-          className="flex flex-col items-center gap-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.4 }}
-        >
-          {/* Progress bar container */}
-          <div className="relative w-32 h-0.5 bg-white/10 rounded-full overflow-hidden">
-            <motion.div
-              className="absolute inset-y-0 left-0 bg-rayyan-red rounded-full"
-              style={{ width: `${progress}%` }}
-            />
-            {/* Shimmer effect */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-              animate={{ x: ["-100%", "100%"] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-            />
-          </div>
-
-          {/* Percentage */}
-          <motion.span 
-            className="text-white/40 text-xs tracking-[0.4em] uppercase font-light"
-          >
-            {progress}%
-          </motion.span>
-        </motion.div>
-      </motion.div>
-
-      {/* Corner accents */}
-      <motion.div
-        className="absolute top-8 left-8 w-12 h-px bg-gradient-to-r from-rayyan-red/50 to-transparent"
-        initial={{ scaleX: 0, opacity: 0 }}
-        animate={{ scaleX: 1, opacity: phase === "split" ? 0 : 1 }}
-        transition={{ delay: 0.2, duration: 0.6 }}
-        style={{ transformOrigin: "left" }}
-      />
-      <motion.div
-        className="absolute top-8 left-8 w-px h-12 bg-gradient-to-b from-rayyan-red/50 to-transparent"
-        initial={{ scaleY: 0, opacity: 0 }}
-        animate={{ scaleY: 1, opacity: phase === "split" ? 0 : 1 }}
-        transition={{ delay: 0.2, duration: 0.6 }}
-        style={{ transformOrigin: "top" }}
-      />
-      
-      <motion.div
-        className="absolute bottom-8 right-8 w-12 h-px bg-gradient-to-l from-rayyan-red/50 to-transparent"
-        initial={{ scaleX: 0, opacity: 0 }}
-        animate={{ scaleX: 1, opacity: phase === "split" ? 0 : 1 }}
-        transition={{ delay: 0.2, duration: 0.6 }}
-        style={{ transformOrigin: "right" }}
-      />
-      <motion.div
-        className="absolute bottom-8 right-8 w-px h-12 bg-gradient-to-t from-rayyan-red/50 to-transparent"
-        initial={{ scaleY: 0, opacity: 0 }}
-        animate={{ scaleY: 1, opacity: phase === "split" ? 0 : 1 }}
-        transition={{ delay: 0.2, duration: 0.6 }}
-        style={{ transformOrigin: "bottom" }}
-      />
-    </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 
