@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Header } from '@/components/Header';
+import { Header2 } from '@/components/Header2';
 import { HeroAbout } from '@/components/HeroAbout';
 import { MatchTicker } from '@/components/MatchTicker';
 import { NewsSection } from '@/components/NewsSection';
@@ -65,7 +65,7 @@ const Index2 = () => {
         animate={animateGrid ? "visible" : "hidden"}
       >
         <motion.div variants={itemVariants}>
-          <Header />
+          <Header2 />
         </motion.div>
         <main>
           <motion.div variants={itemVariants}>
