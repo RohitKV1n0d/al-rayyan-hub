@@ -50,7 +50,7 @@ export function Hero() {
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
               className="flex items-center gap-3 mb-6"
             >
               <div className="w-8 h-0.5 bg-primary" />
@@ -63,7 +63,7 @@ export function Hero() {
             <motion.h1
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-primary-foreground leading-[0.95] tracking-tight uppercase"
             >
               A Tradition of
@@ -76,7 +76,7 @@ export function Hero() {
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
               className="mt-4 text-primary-foreground/70 text-sm md:text-base max-w-lg leading-relaxed"
             >
               Al-Rayyan Sports Club is a leading multi-sport club in Qatar—built on heritage, 
@@ -88,7 +88,7 @@ export function Hero() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
               className="mt-5 flex flex-wrap items-center gap-3"
             >
               <Button variant="hero" size="lg" className="group">
@@ -104,7 +104,7 @@ export function Hero() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
+              transition={{ duration: 0.6, delay: 0.7 }}
               className="mt-4 flex flex-wrap items-center gap-4"
             >
               {['View Fixtures', 'League Table', 'Shop Merchandise'].map((link, i) => (
@@ -124,7 +124,7 @@ export function Hero() {
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
+            transition={{ duration: 0.7, delay: 0.5 }}
             className="w-full lg:w-[340px] flex-shrink-0"
           >
             <div className="bg-foreground/80 backdrop-blur-md rounded-xl border border-primary-foreground/10 overflow-hidden">
@@ -189,7 +189,7 @@ export function Hero() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.6 }}
+          transition={{ duration: 0.7, delay: 0.8 }}
           className="container mx-auto px-4 pb-6"
         >
           <div className="flex items-center justify-center gap-6 md:gap-10 flex-wrap">
@@ -198,7 +198,7 @@ export function Hero() {
                 key={stat.label}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.5 + index * 0.08 }}
+                transition={{ duration: 0.4, delay: 0.8 + index * 0.08 }}
                 className="flex items-center gap-2 group"
               >
                 <span className="text-2xl md:text-3xl font-black text-primary">
