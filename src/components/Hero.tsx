@@ -24,7 +24,7 @@ export function Hero() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   return (
-    <section ref={containerRef} className="relative min-h-screen overflow-hidden bg-foreground">
+    <section ref={containerRef} className="relative min-h-[70vh] overflow-hidden bg-foreground">
       {/* Full Screen Background with Parallax */}
       <motion.div 
         style={{ y, scale }} 
@@ -41,8 +41,8 @@ export function Hero() {
       </motion.div>
 
       {/* Main Content */}
-      <motion.div style={{ opacity }} className="relative min-h-screen flex flex-col">
-        <div className="flex-1 container mx-auto px-4 pt-32 pb-8 flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8 lg:gap-12">
+      <motion.div style={{ opacity }} className="relative flex flex-col">
+        <div className="flex-1 container mx-auto px-4 pt-28 pb-6 flex flex-col lg:flex-row items-center lg:items-start justify-center gap-6 lg:gap-10">
           
           {/* Left Side - Main Content */}
           <div className="flex-1 max-w-2xl">
@@ -64,13 +64,12 @@ export function Hero() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1 }}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-primary-foreground leading-[0.95] tracking-tight uppercase"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-primary-foreground leading-[0.95] tracking-tight uppercase"
             >
               A Tradition of
               <br />
               <span className="text-primary" style={{ fontStyle: 'italic' }}>Sporting</span>
-              <br />
-              <span style={{ fontStyle: 'italic' }}>Excellence</span>
+              <span style={{ fontStyle: 'italic' }}> Excellence</span>
             </motion.h1>
 
             {/* Description */}
@@ -78,7 +77,7 @@ export function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="mt-6 text-primary-foreground/70 text-base md:text-lg max-w-xl leading-relaxed"
+              className="mt-4 text-primary-foreground/70 text-sm md:text-base max-w-lg leading-relaxed"
             >
               Al-Rayyan Sports Club is a leading multi-sport club in Qatar—built on heritage, 
               driven by excellence. Stay updated with the latest football news, fixtures, results, 
@@ -90,7 +89,7 @@ export function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="mt-8 flex flex-wrap items-center gap-4"
+              className="mt-5 flex flex-wrap items-center gap-3"
             >
               <Button variant="hero" size="lg" className="group">
                 Read Latest News
@@ -106,7 +105,7 @@ export function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="mt-6 flex flex-wrap items-center gap-6"
+              className="mt-4 flex flex-wrap items-center gap-4"
             >
               {['View Fixtures', 'League Table', 'Shop Merchandise'].map((link, i) => (
                 <a
@@ -126,11 +125,11 @@ export function Hero() {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
-            className="w-full lg:w-[380px] flex-shrink-0"
+            className="w-full lg:w-[340px] flex-shrink-0"
           >
             <div className="bg-foreground/80 backdrop-blur-md rounded-xl border border-primary-foreground/10 overflow-hidden">
               {/* Panel Header */}
-              <div className="px-5 py-4 border-b border-primary-foreground/10 flex items-center justify-between">
+              <div className="px-4 py-3 border-b border-primary-foreground/10 flex items-center justify-between">
                 <span className="text-primary-foreground font-bold text-sm tracking-wide">QUICK PANEL</span>
                 <span className="text-xs bg-primary/20 text-primary px-2 py-1 rounded-full font-medium">
                   Official • Live-ready
@@ -140,7 +139,7 @@ export function Hero() {
               {/* Next Match */}
               <div className="relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-bl-[100px] -z-0" />
-                <div className="px-5 py-4 relative z-10 bg-gradient-to-r from-primary/30 to-primary/10 border-b border-primary-foreground/10">
+                <div className="px-4 py-3 relative z-10 bg-gradient-to-r from-primary/30 to-primary/10 border-b border-primary-foreground/10">
                   <span className="text-primary-foreground/60 text-xs font-semibold tracking-wide">NEXT MATCH</span>
                   <div className="mt-2">
                     <p className="text-primary-foreground font-bold text-sm flex items-center gap-2">
@@ -153,7 +152,7 @@ export function Hero() {
               </div>
 
               {/* Last Result */}
-              <div className="px-5 py-4 border-b border-primary-foreground/10">
+              <div className="px-4 py-3 border-b border-primary-foreground/10">
                 <span className="text-primary-foreground/60 text-xs font-semibold tracking-wide">LAST RESULT</span>
                 <div className="mt-2">
                   <p className="text-primary-foreground font-bold text-sm flex items-center gap-2">
@@ -168,7 +167,7 @@ export function Hero() {
               </div>
 
               {/* League Position */}
-              <div className="px-5 py-4">
+              <div className="px-4 py-3">
                 <span className="text-primary-foreground/60 text-xs font-semibold tracking-wide">LEAGUE POSITION</span>
                 <div className="mt-2 flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -188,10 +187,10 @@ export function Hero() {
 
         {/* Bottom Stats Bar */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.6 }}
-          className="container mx-auto px-4 pb-8"
+          className="container mx-auto px-4 pb-6"
         >
           <div className="bg-background/95 backdrop-blur-sm rounded-xl border border-border shadow-medium overflow-hidden">
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 divide-x divide-border">
@@ -201,12 +200,12 @@ export function Hero() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.7 + index * 0.1 }}
-                  className="p-4 md:p-5 text-center hover:bg-muted/50 transition-colors group"
+                  className="p-3 md:p-4 text-center hover:bg-muted/50 transition-colors group"
                 >
                   <p className="text-[10px] md:text-xs font-semibold text-muted-foreground tracking-wider uppercase">
                     {stat.label}
                   </p>
-                  <p className="mt-1 text-2xl md:text-3xl font-black text-foreground group-hover:text-primary transition-colors">
+                  <p className="mt-1 text-xl md:text-2xl font-black text-foreground group-hover:text-primary transition-colors">
                     {stat.value}
                   </p>
                   <p className="text-xs text-muted-foreground mt-0.5">{stat.sub}</p>
