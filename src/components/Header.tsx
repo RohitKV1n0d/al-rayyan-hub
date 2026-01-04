@@ -48,9 +48,9 @@ export function Header() {
   }, []);
 
   return (
-    <>
+    <div className="sticky top-0 z-50">
       {/* Top mini bar - Black background */}
-      <div className="bg-foreground text-primary-foreground py-2 px-4 hidden md:block">
+      <div className={`bg-foreground text-primary-foreground py-2 px-4 hidden md:block transition-all duration-300 ${isScrolled ? 'hidden' : ''}`}>
         <div className="container mx-auto flex items-center justify-between">
           {/* Left: Contact info */}
           <div className="flex items-center gap-6">
@@ -306,6 +306,6 @@ export function Header() {
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </div>
   );
 }
