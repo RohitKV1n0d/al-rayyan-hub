@@ -124,18 +124,18 @@ export function Hero4() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.6 }}
-          className="mt-12 bg-white/95 backdrop-blur-sm rounded-2xl overflow-hidden"
+          className="mt-12 border border-white/10 rounded-2xl overflow-hidden bg-white/5 backdrop-blur-sm"
         >
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
             {stats.map((stat, index) => (
               <div
                 key={stat.label}
                 className={`text-center py-6 px-4 ${
-                  index < stats.length - 1 ? 'border-r border-border/50' : ''
-                } ${index >= 2 && index < 4 ? 'max-md:border-t border-border/50' : ''} ${index >= 4 ? 'max-lg:border-t border-border/50' : ''}`}
+                  index < stats.length - 1 ? 'lg:border-r border-white/10' : ''
+                }`}
               >
-                <p className="text-muted-foreground/70 text-[10px] uppercase tracking-wider font-medium mb-2">{stat.label}</p>
-                <p className="text-foreground font-black text-3xl mb-1">{stat.value}</p>
+                <p className="text-muted-foreground text-[10px] uppercase tracking-wider font-medium mb-2">{stat.label}</p>
+                <p className="text-white font-black text-2xl mb-1">{stat.value}</p>
                 <p className="text-muted-foreground text-xs">{stat.subtitle}</p>
               </div>
             ))}
