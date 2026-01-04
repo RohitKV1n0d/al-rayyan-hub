@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
-import playerFeatured from '@/assets/player-featured.jpg';
+import playerHero from '@/assets/player-hero-transparent.png';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -60,16 +60,17 @@ export function Hero3() {
         </div>
       </div>
 
-      {/* Player Image */}
-      <div className="absolute right-0 bottom-0 w-1/2 h-full hidden lg:block">
+      {/* Player Image - Cutout */}
+      <div className="absolute right-0 bottom-0 w-1/2 h-full hidden lg:flex items-end justify-center pointer-events-none">
         <img
-          src={playerFeatured}
+          src={playerHero}
           alt="Featured Player"
-          className="absolute bottom-0 right-0 h-[90%] w-auto object-contain object-bottom"
-          style={{ maxWidth: '600px' }}
+          className="h-[85%] w-auto object-contain object-bottom drop-shadow-2xl"
+          style={{ 
+            filter: 'drop-shadow(0 0 40px rgba(0,0,0,0.5))',
+            mixBlendMode: 'normal'
+          }}
         />
-        {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-r from-foreground via-transparent to-transparent" />
       </div>
 
       {/* Main Content */}
